@@ -9,6 +9,10 @@ This is a PHP wrapper for the BracketCloud API. BracketCloud integrates easy-to-
 * You must read and agree to the BracketCloud API Terms of Service. http://bracketcloud.com/legal
 * Learn about the REST API from the documentation pages. http://bracketcloud.com/developers/api
 
+## Development
+
+This library is under development. Matches and participant interactions coming soon!
+
 ## Getting started
 
 ```php
