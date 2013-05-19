@@ -29,8 +29,6 @@ class BracketCloudAPIRequest {
   public function __construct($api_key) {
     $this->api_url = 'https://bracketcloud.com/api/1.0/';
     $this->api_key = $api_key;
-    
-    $this->error = FALSE;
   }
   
   /**
@@ -65,7 +63,7 @@ class BracketCloudAPIRequest {
   public function request($path = '', $method = 'GET', $params = array()) {
     // Set default values
     $this->http_status = NULL;
-    $this->error = FALSE;
+    $this->error = NULL;
    
     // The API key must be sent with every request we make to the API
     $params['api_key'] = $this->api_key;
@@ -107,16 +105,20 @@ class BracketCloudAPIRequest {
     $result = curl_exec($curl);
     $this->http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
+    $data = $this->parse($result);
     
     if (!in_array($this->http_status, array(200, 204))) {
       // We received an HTTP status code other than the expected 200 or 204
-      $this->error = TRUE;
+      if (isset($data->error)) {
+        $this->error = $data->error;
+      }
+      else {
+        $this->error = "HTTP status code $this->http_status returned. No further error description";
+      }
     }
     
-    $data = $this->parse($result);
-    
     // Return FALSE on error
-    if ($this->error && isset($data->error)) {
+    if (!empty($this->error)) {
       return FALSE;
     }
     
