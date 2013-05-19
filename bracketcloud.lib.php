@@ -113,7 +113,14 @@ class BracketCloudAPIRequest {
       $this->error = TRUE;
     }
     
-    return $this->parse($result);
+    $data = $this->parse($result);
+    
+    // Return FALSE on error
+    if ($this->error && isset($data->error)) {
+      return FALSE;
+    }
+    
+    return $data;
   }
 
   private function parse($data) {
