@@ -90,7 +90,7 @@ class BracketCloudAPIRequest {
         break;
 
       case 'GET':
-        $url .= '?' . http_build_query($params, '', '&');
+        $url .= http_build_query($params, '', '&');
     }
 
     $headers = array('Content-type: application/json');
